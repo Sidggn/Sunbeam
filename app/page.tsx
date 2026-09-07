@@ -89,7 +89,8 @@ export default function HomePage() {
               {options[group].map((item) => {
                 const isSelected = (group === 'color' && choice.color === item.name) || (group === 'lens' && choice.lens === item.name) || choice[group] === item.value
                 return <button className={`option ${isSelected ? 'selected' : ''}`} key={item.value} onClick={() => select(group, group === 'color' || group === 'lens' ? item.name : item.value)} aria-pressed={isSelected}>
-                  {group === 'color' || group === 'lens' ? <span className="swatch" style={{ backgroundColor: item.value }} /> : <span className="option-name">{item.name}</span>}
+                  <span className="option-name">{item.name}</span>
+                  {group === 'color' || group === 'lens' ? <span className="swatch" style={{ backgroundColor: item.value }} /> : <span className="option-visual" aria-hidden="true">{group === 'size' ? '◌' : group === 'style' ? '⌁' : '◍'}</span>}
                   {item.detail && <small>{item.detail}</small>}
                 </button>
               })}
