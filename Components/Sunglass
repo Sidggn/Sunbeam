@@ -1,0 +1,72 @@
+'use client'
+
+import Image from 'next/image'
+
+type SunglassPreviewProps = {
+  frameColor: string   // e.g. '#2E2A26'
+  lensColor: string    // e.g. '#3B2A1E'
+  lensOpacity?: number // 0–1, controls how see-through the lens looks
+}
+
+export function SunglassPreview({
+  frameColor,
+  lensColor,
+  lensOpacity = 0.55,
+}: SunglassPreviewProps) {
+  return (
+    <div className="relative aspect-square w-full max-w-md">
+      {/* 1. Base photo — a real, desaturated (grayscale) photograph */}
+      <Image
+        src="/sunglasses/base-grayscale.png"
+        alt="Sunglasses"
+        fill
+        className="object-contain"
+        priority
+      />
+
+      {/* 2. Frame color — masked to only the frame, multiply-blended so
+             the photo's own shadows/highlights show through the color */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundColor: frameColor,
+          mixBlendMode: 'multiply',
+          WebkitMaskImage: 'url(/sunglasses/frame-mask.png)',
+          maskImage: 'url(/sunglasses/frame-mask.png)',
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+        }}
+      />
+
+      {/* 3. Lens tint — same technique, lower opacity for a glass feel */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundColor: lensColor,
+          opacity: lensOpacity,
+          mixBlendMode: 'multiply',
+          WebkitMaskImage: 'url(/sunglasses/lens-mask.png)',
+          maskImage: 'url(/sunglasses/lens-mask.png)',
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+        }}
+      />
+
+      {/* 4. Optional glare layer — screen-blended so reflections stay
+             bright no matter what color sits underneath */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          mixBlendMode: 'screen',
+          backgroundImage: 'url(/sunglasses/highlights.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+    </div>
+  )
+}
