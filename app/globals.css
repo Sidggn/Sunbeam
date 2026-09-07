@@ -54,13 +54,14 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
 .preview-status { color: var(--muted); text-transform: none; letter-spacing: 0; font-family: Manrope; font-size: 11px; display: flex; align-items: center; }
 .preview-status i { display: inline-block; width: 6px; height: 6px; background: #2e7d32; border-radius: 50%; margin-right: 6px; box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2); }
 
-/* --- HYPER-REALISTIC STUDIO LIGHTING STAGE --- */
+/* --- FIXED STAGE TO PREVENT CLIPPING --- */
 .glasses-stage { 
   height: 320px; 
   position: relative; 
   display: grid; 
   place-items: center; 
-  overflow: hidden; 
+  overflow: visible; /* CHANGED FROM hidden TO visible SO ARMS NEVER GET CUT OFF */
+  padding: 0 40px;   /* Added horizontal breathing room inside the stage */
   background: radial-gradient(circle at 50% 45%, #ffffff 0%, #edf1f5 100%); 
 }
 .studio-light { position: absolute; border-radius: 50%; filter: blur(25px); pointer-events: none; }
@@ -70,11 +71,10 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
 /* --- 3D VOLUMETRIC GLASSES CONTAINER & CONTACT SHADOWS --- */
 .glasses { 
   position: relative; 
-  width: 260px; 
+  width: 240px; /* Slightly adjusted base width to center arms properly */
   height: 110px; 
   z-index: 1; 
   transform: rotate(-3deg); 
-  /* Multi-layered photorealistic contact & ambient floor shadows */
   filter: 
     drop-shadow(0 2px 3px rgba(0, 0, 0, 0.22)) 
     drop-shadow(0 18px 22px rgba(0, 0, 0, 0.14)) 
@@ -86,12 +86,11 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
 .lens { 
   position: absolute; 
   top: 16px; 
-  width: 104px; 
+  width: 98px; 
   height: 74px; 
   border: 6px solid; 
   background-blend-mode: overlay, multiply; 
   opacity: .98; 
-  /* Deep internal rim compression, micro-bevels, and optical depth shadows */
   box-shadow: 
     inset 0 0 12px rgba(255, 255, 255, 0.6),
     inset 0 10px 15px rgba(0, 0, 0, 0.4),
@@ -101,7 +100,6 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
   overflow: hidden; 
 }
 
-/* Multi-curve studio softbox reflection map simulating curved glass glare */
 .lens span { 
   display: block; 
   position: absolute;
@@ -113,14 +111,14 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
   pointer-events: none;
 }
 
-.lens-left { left: 8px; border-radius: 40% 48% 46% 46%; }
-.lens-right { right: 8px; border-radius: 48% 40% 46% 46%; }
+.lens-left { left: 6px; border-radius: 40% 48% 46% 46%; }
+.lens-right { right: 6px; border-radius: 48% 40% 46% 46%; }
 
 .bridge { 
   position: absolute; 
   top: 42px; 
-  left: 100px; 
-  width: 60px; 
+  left: 92px; 
+  width: 56px; 
   height: 10px; 
   z-index: 2; 
   border-radius: 6px; 
@@ -129,15 +127,15 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
 
 .arm { 
   position: absolute; 
-  width: 82px; 
+  width: 76px; 
   height: 9px; 
   top: 30px; 
   z-index: 0; 
   border-radius: 8px; 
   box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 3px 5px rgba(0,0,0,0.18); 
 }
-.arm-left { left: -58px; transform: rotate(-14deg); transform-origin: right; }
-.arm-right { right: -58px; transform: rotate(14deg); transform-origin: left; }
+.arm-left { left: -52px; transform: rotate(-14deg); transform-origin: right; }
+.arm-right { right: -52px; transform: rotate(14deg); transform-origin: left; }
 
 .nose-pad { 
   position: absolute; 
@@ -149,8 +147,8 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
   box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
   z-index: 3; 
 }
-.nose-pad-left { left: 91px; }
-.nose-pad-right { right: 91px; }
+.nose-pad-left { left: 86px; }
+.nose-pad-right { right: 86px; }
 
 .preview-name { 
   position: absolute; 
@@ -164,16 +162,16 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
 
 /* --- FRAME SHAPE VARIATIONS --- */
 .style-aviator .lens { height: 86px; border-radius: 24% 24% 50% 50%; }
-.style-round .lens { border-radius: 50%; height: 80px; width: 90px; }
-.style-round .lens-left { left: 16px; }
-.style-round .lens-right { right: 16px; }
-.style-round .bridge { left: 100px; width: 54px; }
+.style-round .lens { border-radius: 50%; height: 80px; width: 86px; }
+.style-round .lens-left { left: 12px; }
+.style-round .lens-right { right: 12px; }
+.style-round .bridge { left: 92px; width: 52px; }
 .style-cat-eye .lens-left { border-radius: 20% 58% 44% 44%; transform: rotate(-6deg); }
 .style-cat-eye .lens-right { border-radius: 58% 20% 44% 44%; transform: rotate(6deg); }
 
-/* --- SIZES --- */
-.size-petite .glasses { transform: scale(.82) rotate(-3deg); }
-.size-oversize .glasses { transform: scale(1.14) rotate(-3deg); }
+/* --- SIZES (Adjusted scale safely within stage bounds) --- */
+.size-petite .glasses { transform: scale(.78) rotate(-3deg); }
+.size-oversize .glasses { transform: scale(1.05) rotate(-3deg); }
 
 /* --- MATERIAL FINISHES --- */
 .material-titanium .lens { 
@@ -226,7 +224,7 @@ button { font: inherit; cursor: pointer; color: var(--ink); }
   .hero-copy h1 { font-size: 48px; }
   .preview-top, .preview-footer { padding: 13px 12px; }
   .preview-status { display: none; }
-  .glasses-stage { height: 245px; }
+  .glasses-stage { height: 245px; padding: 0 20px; }
   .controls { padding-top: 28px; gap: 18px; }
   .control-group { padding-top: 13px; }
   .option-row { gap: 6px; }
